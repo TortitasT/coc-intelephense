@@ -95,8 +95,13 @@ function getProjectNamespacesFromComposerJson(composerJsonContent: ComposerJsonC
   if (composerJsonContent.autoload) {
     if ('psr-4' in composerJsonContent.autoload) {
       for (const [k, v] of Object.entries(composerJsonContent.autoload['psr-4'])) {
+        let value = v;
+        if (value.endsWith('\\')) {
+          value = value.substring(0, value.lastIndexOf('\\'));
+        }
+
         projectNamespaces.push({
-          [k]: v,
+          [k]: value,
         });
       }
     }
